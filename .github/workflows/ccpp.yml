@@ -1,0 +1,69 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-ubuntu:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+    - name: configure
+      run: mkdir build && cd build && cmake -DCMAKE_CXX_FLAGS="-Werror" ..
+    - name: build
+      run: cmake --build build --config Release
+    - name: test
+      run: cd build && ctest
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ubuntu-artifact
+        path: build/cpp-c-callback-demo
+      
+  build-macos:
+    
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+    - name: configure
+      run: mkdir build && cd build && cmake ..
+    - name: build
+      run: cmake --build build --config Release
+    - name: test
+      run: cd build && ctest
+    - uses: actions/upload-artifact@v2
+      with:
+        name: macos-artifact
+        path: build/cpp-c-callback-demo
+
+  build-windows:
+
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [windows-latest]
+    
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+    - name: configure
+      run: mkdir build && cd build && cmake ..
+    - name: build
+      run: cmake --build build --config Release
+    - name: test
+      run: cd build && ctest
+    - uses: actions/upload-artifact@v2
+      with:
+        name: windows-artifact
+        path: build/Release/cpp-c-callback-demo.exe
