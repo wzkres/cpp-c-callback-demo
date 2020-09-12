@@ -39,8 +39,8 @@ struct ForEachCpp17
     template <size_t I>
     static void RegCallback()
     {
-        printf("ForEachCpp17 reg functions %d %d %p\n", N, I, cb_template<I>);
-        mapped_cbs.emplace(I, cb_template<I>);
+        printf("ForEachCpp17 reg functions %zu %zu %p\n", N, I, cb_template<I>);
+        mapped_cbs.emplace(static_cast<int>(I), cb_template<I>);
 
         if constexpr (I + 1 < N) ForEachCpp17<N>::RegCallback<I+1>();
     }
@@ -52,8 +52,8 @@ struct ForEachCpp14
     template <size_t I>
     static void RegCallback()
     {
-        printf("ForEachCpp14 reg functions %d %d %p\n", N, I, cb_template<I>);
-        mapped_cbs.emplace(I, cb_template<I>);
+        printf("ForEachCpp14 reg functions %zu %zu %p\n", N, I, cb_template<I>);
+        mapped_cbs.emplace(static_cast<int>(I), cb_template<I>);
 
         ForEachCpp14<N>::RecursiveReg<I>();
     }
