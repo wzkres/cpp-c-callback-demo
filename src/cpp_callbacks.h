@@ -59,10 +59,36 @@ struct ForEachCpp14
     }
 
     template <size_t I>
-    static typename std::enable_if<I + 1 < N, void>::type
+    static typename std::enable_if_t<I + 1 < N, void>
     RecursiveReg()
     {
         ForEachCpp14<N>::RegCallback<I+1>();
+    }
+
+    template <size_t I>
+    static typename std::enable_if_t<I + 1 >= N, void>
+    RecursiveReg()
+    {
+    }
+};
+
+template <size_t N>
+struct ForEachCpp11
+{
+    template <size_t I>
+    static void RegCallback()
+    {
+        printf("ForEachCpp11 reg functions %zu %zu %p\n", N, I, cb_template<I>);
+        mapped_cbs.emplace(static_cast<int>(I), cb_template<I>);
+
+        ForEachCpp11<N>::RecursiveReg<I>();
+    }
+
+    template <size_t I>
+    static typename std::enable_if<I + 1 < N, void>::type
+    RecursiveReg()
+    {
+        ForEachCpp11<N>::RegCallback<I+1>();
     }
 
     template <size_t I>

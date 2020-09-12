@@ -66,7 +66,7 @@ void test2()
 
 void test3()
 {
-    ForEachCpp14<2>::RegCallback<0>();
+    ForEachCpp11<2>::RegCallback<0>();
 
     std::thread c_api_caller1([cb = mapped_cbs[0]]()
     {
@@ -88,6 +88,29 @@ void test3()
 }
 
 void test4()
+{
+    ForEachCpp14<2>::RegCallback<0>();
+
+    std::thread c_api_caller1([cb = mapped_cbs[0]]()
+                              {
+                                  c_api_start_counting_no_context(cb, 10);
+                              });
+
+    std::thread c_api_caller2([cb = mapped_cbs[1]]()
+                              {
+                                  c_api_start_counting_no_context(cb, 10);
+                              });
+
+    if (c_api_caller1.joinable())
+        c_api_caller1.join();
+
+    if (c_api_caller2.joinable())
+        c_api_caller2.join();
+
+    mapped_cbs.clear();
+}
+
+void test5()
 {
     ForEachCpp17<4>::RegCallback<0>();
 
@@ -116,6 +139,7 @@ int main()
     test2();
     test3();
     test4();
+    test5();
 
     return EXIT_SUCCESS;
 }
