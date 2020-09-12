@@ -24,7 +24,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: ubuntu-artifact
-        path: build/cpp-c-callback-demo
+        path: build/cpp_c_callback_demo
       
   build-macos:
     
@@ -43,7 +43,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: macos-artifact
-        path: build/cpp-c-callback-demo
+        path: build/cpp_c_callback_demo
 
   build-windows:
 
@@ -66,4 +66,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: windows-artifact
-        path: build/Release/cpp-c-callback-demo.exe
+        path: build/Release/cpp_c_callback_demo.exe
