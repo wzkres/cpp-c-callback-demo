@@ -62,7 +62,7 @@ jobs:
     - name: build
       run: cmake --build build --config Release
     - name: test
-      run: cd build && ctest -C Debug
+      run: cd build && ctest -C Release
     - uses: actions/upload-artifact@v2
       with:
         name: windows-artifact
